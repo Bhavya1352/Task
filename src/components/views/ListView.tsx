@@ -96,30 +96,30 @@ export function ListView() {
       {/* Header */}
       <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-gray-100 bg-gray-50/50 text-xs font-bold text-gray-500 uppercase tracking-tighter dark:border-slate-800 dark:bg-slate-900/80">
         <div 
-          className={cn("col-span-5 flex items-center gap-1 cursor-pointer hover:text-primary transition-colors dark:text-slate-500 dark:hover:text-primary", sortField === 'title' && "text-primary")} 
+          className={cn("col-span-8 md:col-span-5 flex items-center gap-1 cursor-pointer hover:text-primary transition-colors dark:text-slate-500 dark:hover:text-primary", sortField === 'title' && "text-primary")} 
           onClick={() => toggleSort('title')}
         >
           Task Name {sortField === 'title' && <ArrowUpDown size={12} className={sortDir === 'desc' ? 'rotate-180' : ''} />}
         </div>
         <div 
-          className={cn("col-span-2 flex items-center gap-1 cursor-pointer hover:text-primary transition-colors dark:text-slate-500 dark:hover:text-primary", sortField === 'priority' && "text-primary")} 
+          className={cn("hidden md:flex md:col-span-2 items-center gap-1 cursor-pointer hover:text-primary transition-colors dark:text-slate-500 dark:hover:text-primary", sortField === 'priority' && "text-primary")} 
           onClick={() => toggleSort('priority')}
         >
           Priority {sortField === 'priority' && <ArrowUpDown size={12} className={sortDir === 'desc' ? 'rotate-180' : ''} />}
         </div>
         <div 
-          className={cn("col-span-2 flex items-center gap-1 cursor-pointer hover:text-primary transition-colors dark:text-slate-500 dark:hover:text-primary", sortField === 'due' && "text-primary")} 
+          className={cn("hidden md:flex md:col-span-2 items-center gap-1 cursor-pointer hover:text-primary transition-colors dark:text-slate-500 dark:hover:text-primary", sortField === 'due' && "text-primary")} 
           onClick={() => toggleSort('due')}
         >
           Due Date {sortField === 'due' && <ArrowUpDown size={12} className={sortDir === 'desc' ? 'rotate-180' : ''} />}
         </div>
         <div 
-          className={cn("col-span-2 flex items-center gap-1 cursor-pointer hover:text-primary transition-colors dark:text-slate-500 dark:hover:text-primary", sortField === 'status' && "text-primary")} 
+          className={cn("col-span-4 md:col-span-2 flex items-center gap-1 cursor-pointer hover:text-primary transition-colors dark:text-slate-500 dark:hover:text-primary", sortField === 'status' && "text-primary")} 
           onClick={() => toggleSort('status')}
         >
           Status {sortField === 'status' && <ArrowUpDown size={12} className={sortDir === 'desc' ? 'rotate-180' : ''} />}
         </div>
-        <div className="col-span-1 dark:text-slate-500">Assignee</div>
+        <div className="hidden md:flex md:col-span-1 dark:text-slate-500">Assignee</div>
       </div>
 
       {/* Scrollable Area */}

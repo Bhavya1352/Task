@@ -32,7 +32,7 @@ export function TaskDetailSidebar() {
       <div 
         ref={sidebarRef}
         className={cn(
-          "fixed right-0 top-0 z-[70] h-full w-[450px] bg-white shadow-2xl border-l border-gray-100 flex flex-col transition-all duration-300 transform animate-in slide-in-from-right duration-500 ease-out dark:bg-slate-900 dark:border-slate-800",
+          "fixed right-0 top-0 z-[70] h-full sm:w-[450px] w-full bg-white shadow-2xl border-l border-gray-100 flex flex-col transition-all duration-300 transform animate-in slide-in-from-right duration-500 ease-out dark:bg-slate-900 dark:border-slate-800",
         )}
       >
         {/* Header */}

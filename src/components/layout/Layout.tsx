@@ -31,8 +31,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <h1 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Project Tracker</h1>
           </div>
 
-          <div className="flex items-center gap-6">
-            <div className="hidden items-center gap-3 sm:flex">
+          <div className="flex flex-1 items-center justify-end gap-3 sm:gap-6 ml-4 min-w-0">
+            <div className="hidden items-center gap-3 lg:flex">
               <div className="flex -space-x-1.5 overflow-hidden">
                 {collaborationUsers.slice(0, 4).map((user) => (
                   <Avatar key={user.id} name={user.name} color={user.color} size="sm" className="ring-offset-1 dark:ring-slate-900" />
@@ -43,11 +43,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </span>
             </div>
 
-            <nav className="flex items-center rounded-xl bg-gray-100 p-1 shadow-inner dark:bg-slate-800">
+            <nav className="flex items-center rounded-xl bg-gray-100 p-1 shadow-inner overflow-x-auto custom-scrollbar-hide max-w-full dark:bg-slate-800">
               <Button
                 variant={activeView === 'kanban' ? 'primary' : 'ghost'}
                 size="sm"
-                className={cn('rounded-lg px-3 py-1.5', activeView !== 'kanban' && 'hover:bg-gray-200 dark:hover:bg-slate-700 dark:text-slate-400')}
+                className={cn('rounded-lg px-3 py-1.5 flex-shrink-0', activeView !== 'kanban' && 'hover:bg-gray-200 dark:hover:bg-slate-700 dark:text-slate-400')}
                 onClick={() => setActiveView('kanban')}
               >
                 <LayoutGrid size={16} className="mr-2" />
@@ -56,7 +56,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Button
                 variant={activeView === 'list' ? 'primary' : 'ghost'}
                 size="sm"
-                className={cn('rounded-lg px-3 py-1.5', activeView !== 'list' && 'hover:bg-gray-200 dark:hover:bg-slate-700 dark:text-slate-400')}
+                className={cn('rounded-lg px-3 py-1.5 flex-shrink-0', activeView !== 'list' && 'hover:bg-gray-200 dark:hover:bg-slate-700 dark:text-slate-400')}
                 onClick={() => setActiveView('list')}
               >
                 <List size={16} className="mr-2" />
@@ -65,7 +65,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Button
                 variant={activeView === 'timeline' ? 'primary' : 'ghost'}
                 size="sm"
-                className={cn('rounded-lg px-3 py-1.5', activeView !== 'timeline' && 'hover:bg-gray-200 dark:hover:bg-slate-700 dark:text-slate-400')}
+                className={cn('rounded-lg px-3 py-1.5 flex-shrink-0', activeView !== 'timeline' && 'hover:bg-gray-200 dark:hover:bg-slate-700 dark:text-slate-400')}
                 onClick={() => setActiveView('timeline')}
               >
                 <CalendarIcon size={16} className="mr-2" />
@@ -76,20 +76,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
         
         {/* Stats Bar */}
-        <div className="mx-auto flex h-10 w-full max-w-7xl items-center gap-8 border-t border-gray-100 px-8 py-1 dark:border-slate-800">
-          <div className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-slate-400">
+        <div className="mx-auto flex h-10 w-full max-w-7xl items-center gap-4 sm:gap-8 border-t border-gray-100 px-4 sm:px-8 py-1 overflow-x-auto custom-scrollbar-hide dark:border-slate-800">
+          <div className="flex flex-shrink-0 items-center gap-2 text-xs font-medium text-gray-500 dark:text-slate-400">
             <BarChart2 size={14} className="text-primary" />
             <span>Total: <span className="text-gray-900 dark:text-white font-bold">{totalTasks}</span></span>
           </div>
-          <div className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-slate-400">
+          <div className="flex flex-shrink-0 items-center gap-2 text-xs font-medium text-gray-500 dark:text-slate-400">
             <CheckCircle2 size={14} className="text-green-500" />
             <span>Done: <span className="text-gray-900 dark:text-white font-bold">{completedTasks}</span></span>
           </div>
-          <div className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-slate-400">
+          <div className="flex flex-shrink-0 items-center gap-2 text-xs font-medium text-gray-500 dark:text-slate-400">
             <Clock size={14} className="text-red-500" />
             <span>Overdue: <span className="text-gray-900 dark:text-white font-bold">{overdueTasks}</span></span>
           </div>
-          <div className="ml-auto text-[10px] font-bold uppercase tracking-widest text-gray-300 dark:text-slate-600">
+          <div className="ml-auto hidden sm:block text-[10px] font-bold uppercase tracking-widest text-gray-300 dark:text-slate-600">
             Live Updates Enabled
           </div>
         </div>
