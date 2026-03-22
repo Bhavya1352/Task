@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: 221 83% 53%; /* #2563EB */
+    --primary-foreground: 210 40% 98%;
+  }
+
+  body {
+    @apply antialiased bg-slate-50 text-slate-950 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-50;
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+  }
+}
+
+/* Custom Scrollbar for better UX */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors dark:bg-slate-800 dark:hover:bg-slate-700;
+}
+
+/* Custom Drag and Drop Styles */
+.grabbing {
+  cursor: grabbing !important;
+}
+
+/* Animations for new tasks/views */
+@keyframes fadeInSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-entrance {
+  animation: fadeInSlideUp 0.3s ease-out forwards;
+}
