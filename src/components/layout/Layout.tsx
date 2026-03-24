@@ -41,6 +41,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <span className="text-xs font-semibold text-gray-500 dark:text-slate-400">
                 {collaborationUsers.length} online
               </span>
+              <div className="h-4 w-px bg-gray-200 dark:bg-slate-800" />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-9 w-9 p-0 rounded-xl dark:text-slate-400 dark:hover:bg-slate-800"
+                onClick={toggleDarkMode}
+              >
+                {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+              </Button>
             </div>
 
             <nav className="flex items-center rounded-xl bg-gray-100 p-1 shadow-inner overflow-x-auto custom-scrollbar-hide max-w-full dark:bg-slate-800">

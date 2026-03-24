@@ -3,7 +3,7 @@
 A high-performance, feature-rich project management tool built from scratch with React, TypeScript, and Tailwind CSS. This project demonstrates core frontend engineering skills: custom drag-and-drop logic, virtual scrolling, state architecture, and complex UI layouts without the use of third-party UI or utility libraries for core features.
 
 ## 🚀 Live Demo
-[Deployed Link Placeholder]
+[https://task-plum-two.vercel.app/](https://task-plum-two.vercel.app/)
 
 ## 🛠️ Tech Stack
 - **Framework**: React 18 (TypeScript)

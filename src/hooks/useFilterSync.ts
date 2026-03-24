@@ -14,27 +14,36 @@ export const useFilterSync = () => {
     if (filters.dateRange.to) params.set('to', filters.dateRange.to);
 
     const newPath = `${window.location.pathname}?${params.toString()}`;
-    window.history.replaceState({ ...window.history.state, path: newPath }, '', newPath);
+    // Only push if different from current to avoid history bloating
+    if (window.location.search !== `?${params.toString()}`) {
+      window.history.pushState({ ...window.history.state, path: newPath }, '', newPath);
+    }
   }, [filters]);
 
-  useEffect(() => {
-    // Initial sync from URL
+  const syncFromUrl = useCallback(() => {
     const params = new URLSearchParams(window.location.search);
     const urlFilters = {
-      status: (params.get('status')?.split(',') as Status[]) || [],
-      priority: (params.get('priority')?.split(',') as Priority[]) || [],
-      assignees: params.get('assignees')?.split(',') || [],
+      status: (params.get('status')?.split(',').filter(Boolean) as Status[]) || [],
+      priority: (params.get('priority')?.split(',').filter(Boolean) as Priority[]) || [],
+      assignees: params.get('assignees')?.split(',').filter(Boolean) || [],
       dateRange: {
         from: params.get('from') || '',
         to: params.get('to') || '',
       },
     };
     
-    // Only update if there's something in the URL
-    if (params.toString()) {
-      setFilters(urlFilters);
-    }
-  }, []);
+    setFilters(urlFilters);
+  }, [setFilters]);
+
+  useEffect(() => {
+    // Initial sync from URL
+    syncFromUrl();
+
+    // Listen for back/forward navigation
+    const handlePopState = () => syncFromUrl();
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [syncFromUrl]);
 
   useEffect(() => {
     syncToUrl();

@@ -2,11 +2,11 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useTaskStore } from '../../store/useTaskStore';
 import { Status, Task } from '../../types';
 import { USERS } from '../../lib/data-generator';
-import { Avatar } from '../ui/Avatar';
-import { Badge, cn } from '../ui/Badge';
-import { BadgeVariant } from '../ui/Badge';
+import { Avatar, AvatarGroup } from '../ui/Avatar';
+import { Badge, cn, BadgeVariant } from '../ui/Badge';
 import { format, isToday, isPast, differenceInDays } from 'date-fns';
-import { Clock, Calendar as CalendarIcon, MessageSquare } from 'lucide-react';
+import { Clock, Calendar as CalendarIcon, MessageSquare, Plus } from 'lucide-react';
+import { Button } from '../ui/Button';
 
 const COLUMNS: Status[] = ['todo', 'in-progress', 'in-review', 'done'];
 const COLUMN_NAMES: Record<Status, string> = {
@@ -179,27 +179,33 @@ export function KanbanView() {
               const isOverdue = isPast(new Date(task.dueDate)) && !isToday(new Date(task.dueDate));
 
               return (
-                <div
-                  key={task.id}
-                  className={cn(
-                    'relative rounded-xl bg-white p-4 shadow-sm border border-gray-100 cursor-grab active:cursor-grabbing transition-all hover:shadow-md hover:border-gray-200 group dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700',
-                    isBeingDragged && isDragging ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100',
-                    isSelected && 'ring-2 ring-primary border-transparent bg-blue-50/50 shadow-lg dark:bg-primary/10 dark:ring-primary/60'
+                <React.Fragment key={task.id}>
+                  {/* Drag Placeholder */}
+                  {isBeingDragged && isDragging && (
+                    <div className="h-[120px] w-full rounded-xl border-2 border-dashed border-primary/20 bg-primary/5 animate-pulse" />
                   )}
-                  style={{ touchAction: 'none' }}
-                  onPointerDown={(e) => onPointerDown(e, task.id)}
-                  onPointerMove={onPointerMove}
-                  onPointerUp={onPointerUp}
-                >
+                  
+                  <div
+                    className={cn(
+                      'relative rounded-xl bg-white p-4 shadow-sm border border-gray-100 cursor-grab active:cursor-grabbing transition-all hover:shadow-md hover:border-gray-200 group dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700',
+                      isBeingDragged && isDragging ? 'opacity-0 h-0 p-0 m-0 border-0 pointer-events-none scale-95 overflow-hidden' : 'opacity-100 scale-100',
+                      isSelected && 'ring-2 ring-primary border-transparent bg-blue-50/50 shadow-lg dark:bg-primary/10 dark:ring-primary/60',
+                      isSnapping && isBeingDragged && 'transition-[left,top,opacity,transform] duration-300 ease-out'
+                    )}
+                    style={{ touchAction: 'none' }}
+                    onPointerDown={(e) => onPointerDown(e, task.id)}
+                    onPointerMove={onPointerMove}
+                    onPointerUp={onPointerUp}
+                  >
                   <div className="mb-3 flex items-start justify-between gap-1">
                     <Badge variant={task.priority as BadgeVariant} className="uppercase text-[10px] font-extrabold tracking-tighter">
                       {task.priority}
                     </Badge>
-                    <div className="flex -space-x-1">
+                    <AvatarGroup max={2} size="xs" className="animate-in fade-in slide-in-from-right-2 duration-500">
                       {peopleOnTask.map(u => (
-                         <div key={u.id} className="w-5 h-5 rounded-full ring-2 ring-white animate-pulse dark:ring-slate-900" style={{ backgroundColor: u.color }} title={`${u.name} is editing`} />
+                         <Avatar key={u.id} name={u.name} color={u.color} />
                       ))}
-                    </div>
+                    </AvatarGroup>
                   </div>
                   
                   <h4 className={cn("mb-3 text-sm font-semibold leading-relaxed text-gray-900 line-clamp-2 dark:text-slate-100", isSelected && "text-primary dark:text-primary")}>
@@ -223,6 +229,7 @@ export function KanbanView() {
                     <div className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-primary border-2 border-white dark:border-slate-900 shadow-sm shadow-primary/50 animate-in fade-in zoom-in" />
                   )}
                 </div>
+                </React.Fragment>
               );
             })}
           </div>

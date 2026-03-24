@@ -2,11 +2,11 @@ import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react'
 import { useTaskStore } from '../../store/useTaskStore';
 import { Task, Status, Priority } from '../../types';
 import { USERS } from '../../lib/data-generator';
-import { Badge, cn } from '../ui/Badge';
-import { Avatar } from '../ui/Avatar';
+import { Badge, cn, BadgeVariant } from '../ui/Badge';
+import { Avatar, AvatarGroup } from '../ui/Avatar';
 import { Button } from '../ui/Button';
 import { Dropdown, DropdownItem } from '../ui/Dropdown';
-import { ArrowUpDown, ChevronDown } from 'lucide-react';
+import { ArrowUpDown, ChevronDown, List as ListIcon } from 'lucide-react';
 import { format, isToday, isPast, differenceInDays } from 'date-fns';
 
 const ROW_HEIGHT = 60;
@@ -22,6 +22,21 @@ export function ListView() {
   
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(600);
+
+  // Measure container height for precise virtual scrolling
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setViewportHeight(entry.contentRect.height);
+      }
+    });
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   // Filter tasks
   const filteredTasks = useMemo(() => {
@@ -61,7 +76,6 @@ export function ListView() {
   }, []);
 
   const totalHeight = sortedTasks.length * ROW_HEIGHT;
-  const viewportHeight = 600; // Expected height of the scroll container
   
   const startIndex = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - BUFFER_SIZE);
   const endIndex = Math.min(
@@ -82,13 +96,13 @@ export function ListView() {
 
   const getDueDateLabel = (dateStr: string) => {
     const date = new Date(dateStr);
-    if (isToday(date)) return <span className="text-orange-600 font-semibold">Due Today</span>;
+    if (isToday(date)) return <span className="text-orange-600 font-bold dark:text-orange-400">Due Today</span>;
     if (isPast(date)) {
       const days = differenceInDays(new Date(), date);
-      if (days >= 7) return <span className="text-red-500 font-bold">{days} days overdue</span>;
-      return <span className="text-red-500 font-medium">{format(date, 'MMM d, yyyy')}</span>;
+      if (days >= 7) return <span className="text-red-600 font-black dark:text-red-400">{days} days overdue</span>;
+      return <span className="text-red-500 font-bold dark:text-red-400">{format(date, 'MMM d, yyyy')}</span>;
     }
-    return format(date, 'MMM d, yyyy');
+    return <span className="dark:text-slate-400">{format(date, 'MMM d, yyyy')}</span>;
   };
 
   return (
@@ -131,7 +145,7 @@ export function ListView() {
         {sortedTasks.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-4 bg-gray-50/20 dark:bg-slate-900/40">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 dark:bg-slate-800 dark:border-slate-700">
-               <List size={32} className="text-gray-200 dark:text-slate-700" />
+               <ListIcon size={32} className="text-gray-200 dark:text-slate-700" />
             </div>
             <p className="text-lg font-semibold text-gray-400 dark:text-slate-600">No matching tasks found</p>
             <Button variant="outline" size="sm" className="dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800" onClick={() => useTaskStore.getState().clearFilters()}>Clear filters</Button>
@@ -166,11 +180,11 @@ export function ListView() {
                         {task.title}
                       </span>
                       {peopleOnTask.length > 0 && (
-                        <div className="flex -space-x-1">
-                          {peopleOnTask.slice(0, 2).map(u => (
-                            <div key={u.id} className="w-5 h-5 rounded-full ring-2 ring-white animate-pulse dark:ring-slate-900" style={{ backgroundColor: u.color }} title={`${u.name} is viewing`} />
+                        <AvatarGroup max={2} size="xs" className="animate-in fade-in zoom-in duration-500">
+                          {peopleOnTask.map(u => (
+                            <Avatar key={u.id} name={u.name} color={u.color} />
                           ))}
-                        </div>
+                        </AvatarGroup>
                       )}
                     </div>
                     
